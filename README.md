@@ -17,6 +17,8 @@ Da questo repository dovete scaricare i seguenti file:
 - [wpa_supplicant.conf](resource/wpa_supplicant.conf)
 - [ssh](resource/ssh)
 - [???](resource/???)
+
+git
 ## Flashare la Raspberry
 A gruppi prendete la Raspberry ed il cavo USB.
 Scaricare [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/) (senza Desktop).
