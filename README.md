@@ -24,11 +24,10 @@ Ricordatevi che di default la Raspberry usa i seguenti parametri:
 - psw: raspberry
 
 La procedura di configurazione è la seguente.
-1. attivare il server SSH creando un file vuoto `/boot/ssh`
-```
-```
+1. attivare il server SSH creando un file vuoto `/boot/ssh`, fare attenzione che il file sia completamente vuoto e che il terminatore di riga sia impostato su `LF`
+
 2. attivare la UART USB in `/boot/config.txt`
-```conf
+```sh
 #enableUART
 enable_uart=1 
 ```
@@ -65,8 +64,8 @@ network={
 	priority=2
 }
 ```
-4. configurare le interfacce di rete nel file `/etc/network/interfaces`
-```conf
+4. configurare le interfacce di rete nel file `/etc/network/interfaces`, sostituendo il contenuto del file con lo snippet seguente
+```sh
 # interfaces(5) file used by ifup(8) and ifdown(8)
 # Please note that this file is written to be used with dhcpcd 
 # For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
@@ -106,5 +105,5 @@ Per ulteriori dettagli e procedure aggiuntive, rimandiamo alle guide complete de
 - [Raspberry pinout](resource/raspbery-pi-3-gpio-pinout-40-pin-header-block-connector-1-1.png)
 - Cavo USB-TTL (per collegamento seriale - UART): [connessione](resource/USBTTLPinout.png), [pinout](resource/usbttlpinout.jpg), [acquisto](https://www.amazon.it/Sumind-Raspberry-Programmazione-Seriale-Supported/dp/B01N4X3BJB/ref=sr_1_fkmr2_1?ie=UTF8&qid=1553507750&sr=8-1-fkmr2&keywords=Usb+To+TTL+Pl2303ta)
 
-- Domotica for Dummies - [parte 0](resource/domotica4dummies/domotica4dummies_parte-0.pdf), [parte 1](resource/domotica4dummies/domotica4dummies_parte-1.pdf)
+- Domotica for Dummies: [parte 0](resource/domotica4dummies/domotica4dummies_parte-0.pdf), [parte 1](resource/domotica4dummies/domotica4dummies_parte-1.pdf)
 
