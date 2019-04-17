@@ -145,5 +145,5 @@ sudo /etc/init.d/networking restart
   python -m pip install esptool
 # per flashare lo ESP8266 con il FW Tasmota eseguire:
   esptool.py --port COMX write_flash -fs 1MB -fm dout 0x0 sonoff.bin
-#con X il numero di porta COM a cui è collegato il cavo USBTTL
+#con X il numero di porta COM a cui ï¿½ collegato il cavo USBTTL
 #######################################################################

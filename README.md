@@ -24,14 +24,14 @@ Ricordatevi che di default la Raspberry usa i seguenti parametri:
 - psw: raspberry
 
 La procedura di configurazione è la seguente.
-1. attivare il server SSH creando un file vuoto `/boot/ssh`, fare attenzione che il file sia completamente vuoto e che il terminatore di riga sia impostato su `LF`
+1. attivare il server SSH creando un file vuoto `/boot/ssh` (attenzione che il file deve essere completamente vuoto, senza spazi né righe vuote)
 
 2. attivare la UART USB in `/boot/config.txt`
 ```sh
 #enableUART
 enable_uart=1 
 ```
-3. configurare la rete `marconiopen` della scuola con autenticazione WPA/WPA2 creando il file `/boot/wpa_supplicant.conf`
+3. configurare la rete `marconiopen` della scuola con autenticazione WPA/WPA2 creando il file `/boot/wpa_supplicant.conf`.
 ```conf
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -43,6 +43,8 @@ network={
     key_mgmt=WPA-PSK
 }
 ```
+
+ **Attenzione**: controllate che il terminatore di riga sia impostato su `LF`. Su Visual Studio Code potete facilmente verificarlo guardando se c'è scritto `LF` nella barra in basso a destra: se trovate scritto `CRLF`, cliccateci sopra e selezionate il terminatore di riga corretto.
 
 Opzionale: se volete configurare anche una rete WiFi di casa vostra, potete usare il seguente file `/boot/wpa_supplicant.conf`:
 ```conf
