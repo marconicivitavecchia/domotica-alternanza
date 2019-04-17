@@ -1,0 +1,149 @@
+login: pi
+psw: raspberry
+
+#######################################################################
+#per attivare il server SSH creare il file vuoto
+#######################################################################
+#/boot/ssh
+#######################################################################
+
+#######################################################################
+#/boot/config.txt  (per attivare la UART USB)
+#######################################################################
+#enableUART
+enable_uart=1 
+#######################################################################
+#/boot/wpa_supplicant.conf per AP con una sola autenticazione WPA/WPA2
+#######################################################################
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=IT
+
+network={
+    ssid="marconiopen"
+    psk="marconiopen"
+    key_mgmt=WPA-PSK
+}
+
+#######################################################################################
+#/boot/wpa_supplicant.conf per AP con autenticazione WPA/WPA2 per casa e scuola
+#######################################################################################
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=IT
+
+network={
+    ssid="marconiopen"
+    psk="marconiopen"
+    key_mgmt=WPA-PSK
+	priority=1
+}
+
+network={
+    ssid="ssid-casa"
+    psk="psk-casa"
+    key_mgmt=WPA-PSK
+	priority=2
+}
+
+#######################################################################
+#/boot/wpa_supplicant.conf per AP senza autenticazione
+#######################################################################
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=IT
+
+network={
+    ssid="marconiopen" 	#"any"
+    key_mgmt=NONE 		#WPA-PSK
+}
+
+#######################################################################
+#/boot/wpa_supplicant.conf per AP con autenticazione WPA Enterprise
+#######################################################################
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=IT
+
+network={
+        ssid="AU_WiFi"
+        # For hidden SSIDs
+        scan_ssid=1
+        mode=0
+        key_mgmt=WPA-EAP
+        pairwise=CCMP TKIP
+        identity="XXXXXXXX"
+        password="XXXXXXXX"
+        phase1="peaplabel=0"
+        phase2="auth=MSCHAPV2"
+}
+
+#######################################################################
+#/etc/network/interfaces 
+#######################################################################
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Please note that this file is written to be used with dhcpcd 
+# For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
+
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d 
+auto lo
+
+iface lo inet loopback
+iface eth0 inet dhcp
+
+allow-hotplug wlan0
+iface wlan0 inet manual
+wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+iface default inet dhcp
+
+################################################################
+Enabling The Root Account
+################################################################
+sudo nano /etc/ssh/sshd_config
+PermitRootLogin without-password  -->  PermitRootLogin yes
+/etc/init.d/ssh restart
+sudo passwd root
+
+You can undo logging in as root again using this command
+sudo passwd -l root
+
+################################################################
+GCC compiler
+################################################################
+gcc program-source-code.c -o executable-file-namegcc
+
+gcc -pthread program-source-code.c -o executable-file-namegcc
+
+gcc -pthread blink1.c -o blink1
+
+#######################################################################
+#Per disabilitare il power saving da comando CLI
+#######################################################################
+sudo iw dev wlan0 set power_save off
+#######################################################################
+#/etc/modprobe.d/8192cu.conf: Per disabilitare il power saving da file
+#######################################################################
+# Disable power management 
+# options 8192cu rtw_power_mgnt=0 rtw_enusbss=0
+#######################################################################
+#carica e controlla sintatticamente il supplicant WiFi
+##################################################################################################################################
+sudo /sbin/wpa_supplicant -P /var/run/wpa_supplicant.wlan0.pid -i wlan0 -D nl80211,wext -c /etc/wpa_supplicant/wpa_supplicant.conf
+##################################################################################################################################
+#Riavvia il modulo ifupdown (gestore delle interfacce)
+sudo /etc/init.d/networking restart
+#######################################################################
+#Procedura per installare esptools su Windows
+#######################################################################
+#installare python 2.t su windows nella cartella c:/python2.7
+#andare su pannelo di controllo-->Sistema-->Impostazioni avanzate-->Variabili d'ambiente
+#modificare la voce PATH inserendo alla fine C:\Python27 e chiudere
+#scaricare lo zip esptools e scompattarlo
+#aprire il prompt dei comandi (esegui cmd) e trascinare la cartella ottenuta prima sulla finestra  del prompt
+#eseguire ilcomando:
+  python -m pip install esptool
+# per flashare lo ESP8266 con il FW Tasmota eseguire:
+  esptool.py --port COMX write_flash -fs 1MB -fm dout 0x0 sonoff.bin
+#con X il numero di porta COM a cui è collegato il cavo USBTTL
+#######################################################################
