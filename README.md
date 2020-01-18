@@ -15,6 +15,8 @@ Installare nella propria macchina Windows:
 - [BalenaEtcher](https://etcher.io)
 
 ## Configurazione della Raspberry
+
+### Configurazione SD Card da PC
 Per cominciare, configuriamo le Raspberry in modo da poterla trasformare nel nostro server per la domotica. Seguiremo [questo](https://desertbot.io/blog/headless-raspberry-pi-3-bplus-ssh-wifi-setup) tutorial per configurare la Raspberry senza dover collegare né lo schermo, né un cavetto seriale.
 
 Prima di tutto scaricate [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/) dal sito ufficiale e installatela sulla scheda SD usando BalenaEtcher che avete scaricato all'inizio.
@@ -24,14 +26,16 @@ Ricordatevi che di default la Raspberry usa i seguenti parametri:
 - psw: raspberry
 
 La procedura di configurazione è la seguente.
-1. attivare il server SSH creando un file vuoto `/boot/ssh` (attenzione che il file deve essere completamente vuoto, senza spazi né righe vuote)
+1. inserire la scheda SD da configurare nel PC tramite adattatore
+1. aprire Visual Studio Code ed aprire la cartella dell'SD Card (ad esempio G:)
+1. creare un file vuoto `ssh` (attenzione che il file deve essere **completamente vuoto**, senza spazi né righe vuote); in questo modo verrà abilitato il server SSH sulla Raspberry, che di default è disabilitato.
 
-2. attivare la UART USB in `/boot/config.txt`
+1. attivare la UART USB in `/boot/config.txt`
 ```sh
 #enableUART
 enable_uart=1 
 ```
-3. configurare la rete `marconiopen` della scuola con autenticazione WPA/WPA2 creando il file `/boot/wpa_supplicant.conf`.
+1. configurare la rete `marconiopen` della scuola con autenticazione WPA/WPA2 creando il file `wpa_supplicant.conf`.
 ```conf
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -66,7 +70,19 @@ network={
 	priority=2
 }
 ```
-4. configurare le interfacce di rete nel file `/etc/network/interfaces`, sostituendo il contenuto del file con lo snippet seguente
+
+Ora la scheda SD è pronta per essere estratta ed inserita nella Raspberry! 🎉
+
+### Accesso alla Raspberry e configurazione finale
+1. inserire la scheda SD appena configurata nella Raspberry
+1. accendere la Raspberry
+1. accedere alla Raspberry con il comando:
+```sh
+ssh pi@x.x.x.x
+```
+dove dovete sostituire le x con l'indirizzo IP della Raspberry che trovate scritto nell'etichetta.
+
+1. configurare le interfacce di rete nel file `/etc/network/interfaces`, sostituendo il contenuto del file con lo snippet seguente
 ```sh
 # interfaces(5) file used by ifup(8) and ifdown(8)
 # Please note that this file is written to be used with dhcpcd 
@@ -85,7 +101,7 @@ wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
 iface default inet dhcp
 ```
 
-5. abilitare l'account di root.
+1. abilitare l'account di root.
 ```sh
 sudo nano /etc/ssh/sshd_config
 PermitRootLogin without-password  -->  PermitRootLogin yes
